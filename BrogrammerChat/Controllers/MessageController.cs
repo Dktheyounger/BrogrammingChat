@@ -1,37 +1,62 @@
 ﻿using BrogrammerChat.Data;
-using BrogrammerChat.Models;
 using Microsoft.AspNetCore.Mvc;
-using static BrogrammerChat.Data.BrogrammerChatContext;
 
 namespace BrogrammerChat.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/Messages")]
     [ApiController]
     public class MessageController : ControllerBase
     {
-
-        [HttpGet(Name = "GetMessage")]
-        public IEnumerable<MoMessage> Get()
+        [HttpGet]
+        public ActionResult<IEnumerable<Message>> GetMessages()
         {
-            return new List<MoMessage>();
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+            var messages = dataContext.Messages.ToList();
+            return Ok(messages);
+        }
+
+        [HttpGet("{_messageID}")]
+        public ActionResult<Message> GetMessage(int _messageID)
+        {
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+            var message = dataContext.Messages.Single(message => message.MessageID == _messageID);
+
+            if (message == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(message);
         }
 
         [HttpPost(Name = "PostMessage")]
-        public ActionResult Post(MoMessage message)
+        public ActionResult Post([FromBody]Message _message)
         {
-            using (MyContext datacontenxt = new MyContext())
+            if (_message.UserID == 0)
             {
-                var m = new Message()
-                {
-                    ContentID = message.ContentID,
-                    UserID = message.UserID
-                };
-                
-
-                datacontenxt.Messages.Add(m);
-                datacontenxt.SaveChanges();
-                return CreatedAtAction(nameof(Post), message);
+                return BadRequest();
             }
+
+            using BrogrammerChatContext datacContext = new BrogrammerChatContext();
+
+            var content = new Content()
+            {
+                TextAttachments = _message.Content.TextAttachments,
+                BinaryAttachments = _message.Content.BinaryAttachments
+            };
+
+            datacContext.Contents.Add(content);
+            datacContext.SaveChanges();
+
+            var message = new Message()
+            {
+                ContentID = content.ContentID,
+                UserID = _message.UserID
+            };
+
+            datacContext.Messages.Add(message);
+            datacContext.SaveChanges();
+            return Ok();
         }
     }
 }

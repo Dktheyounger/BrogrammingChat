@@ -2,24 +2,21 @@
 
 namespace BrogrammerChat.Data
 {
-    public class BrogrammerChatContext
+    public class BrogrammerChatContext : DbContext
     {
-        public class MyContext : DbContext
+        public DbSet<Content> Contents { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            public DbSet<Content> Contents { get; set; }
-            public DbSet<Message> Messages { get; set; }
-            public DbSet<User> Users { get; set; }
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
 
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-                optionsBuilder
-                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            }
+            optionsBuilder
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
     }
 }

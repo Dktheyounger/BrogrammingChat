@@ -1,17 +1,52 @@
-﻿using BrogrammerChat.Models;
+﻿using BrogrammerChat.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrogrammerChat.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/Users")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet(Name = "GetUser")]
-        public IEnumerable<MoUser> Get()
+        [HttpGet("{_userID}")]
+        public ActionResult<IEnumerable<Message>> GetUserMessages(int _userID)
         {
-            return new List<MoUser>();
+            //Garbage code just to get a byte[] as a string
+            Byte[] data = new Byte[10];
+            string dataAsString = Convert.ToBase64String(data);
+
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+            var messages = dataContext.Messages.Where(message => message.UserID == _userID).ToList();
+            return Ok(messages);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<User>> GetUsers()
+        {
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+            var users = dataContext.Users.ToList();
+            return Ok(users);
+        }
+
+        [HttpPost(Name = "PostUser")]
+        public ActionResult Post([FromBody] User _user)
+        {
+            if (_user.UserID != 0 || _user == null)
+            {
+                return BadRequest();
+            }
+
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+
+            var user = new User()
+            {
+                UserName = _user.UserName,
+                Password = _user.Password
+            };
+
+            dataContext.Users.Add(user);
+            dataContext.SaveChanges();
+            return Ok(user);
         }
     }
 }
