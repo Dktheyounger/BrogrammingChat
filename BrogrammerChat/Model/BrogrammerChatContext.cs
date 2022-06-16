@@ -24,16 +24,13 @@ namespace BrogrammerChat.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=BrogrammerChat; Trusted_Connection=True; MultipleActiveResultSets=true");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             }
-
-//            IConfigurationRoot configuration = new ConfigurationBuilder()
-//.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-//.AddJsonFile("appsettings.json")
-//.Build();
-
-//            optionsBuilder
-//                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
