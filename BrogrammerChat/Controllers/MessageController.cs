@@ -1,4 +1,4 @@
-﻿using BrogrammerChat.Data;
+﻿using BrogrammerChat.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrogrammerChat.Controllers
@@ -19,7 +19,7 @@ namespace BrogrammerChat.Controllers
         public ActionResult<Message> GetMessage(int _messageID)
         {
             using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var message = dataContext.Messages.Single(message => message.MessageID == _messageID);
+            var message = dataContext.Messages.Single(message => message.MessageId == _messageID);
 
             if (message == null)
             {
@@ -32,7 +32,7 @@ namespace BrogrammerChat.Controllers
         [HttpPost(Name = "PostMessage")]
         public ActionResult Post([FromBody]Message _message)
         {
-            if (_message.UserID == 0)
+            if (_message.UserId == 0)
             {
                 return BadRequest();
             }
@@ -41,8 +41,8 @@ namespace BrogrammerChat.Controllers
 
             var content = new Content()
             {
-                TextAttachments = _message.Content.TextAttachments,
-                BinaryAttachments = _message.Content.BinaryAttachments
+                TextAttachments = "",
+                BinaryAttachments = new byte[0]
             };
 
             datacContext.Contents.Add(content);
@@ -50,8 +50,8 @@ namespace BrogrammerChat.Controllers
 
             var message = new Message()
             {
-                ContentID = content.ContentID,
-                UserID = _message.UserID
+                ContentId = content.ContentId,
+                UserId = _message.UserId
             };
 
             datacContext.Messages.Add(message);

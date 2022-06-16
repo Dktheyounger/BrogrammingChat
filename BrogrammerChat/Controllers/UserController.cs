@@ -1,4 +1,4 @@
-﻿using BrogrammerChat.Data;
+﻿using BrogrammerChat.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace BrogrammerChat.Controllers
             string dataAsString = Convert.ToBase64String(data);
 
             using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var messages = dataContext.Messages.Where(message => message.UserID == _userID).ToList();
+            var messages = dataContext.Messages.Where(message => message.UserId == _userID).ToList();
             return Ok(messages);
         }
 
@@ -31,7 +31,7 @@ namespace BrogrammerChat.Controllers
         [HttpPost(Name = "PostUser")]
         public ActionResult Post([FromBody] User _user)
         {
-            if (_user.UserID != 0 || _user == null)
+            if (_user.UserId != 0 || _user == null)
             {
                 return BadRequest();
             }
