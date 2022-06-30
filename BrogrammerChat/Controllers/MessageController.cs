@@ -1,4 +1,4 @@
-﻿using BrogrammerChatData.Model;
+﻿using BrogrammerChatData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrogrammerChat.Controllers
