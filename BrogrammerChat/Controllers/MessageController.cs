@@ -1,4 +1,4 @@
-﻿using BrogrammerChat.Model;
+﻿using BrogrammerChatData.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrogrammerChat.Controllers
@@ -37,7 +37,7 @@ namespace BrogrammerChat.Controllers
                 return BadRequest();
             }
 
-            using BrogrammerChatContext datacContext = new BrogrammerChatContext();
+            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
 
             var content = new Content()
             {
@@ -45,8 +45,8 @@ namespace BrogrammerChat.Controllers
                 BinaryAttachments = new byte[0]
             };
 
-            datacContext.Contents.Add(content);
-            datacContext.SaveChanges();
+            dataContext.Contents.Add(content);
+            dataContext.SaveChanges();
 
             var message = new Message()
             {
@@ -54,8 +54,8 @@ namespace BrogrammerChat.Controllers
                 UserId = _message.UserId
             };
 
-            datacContext.Messages.Add(message);
-            datacContext.SaveChanges();
+            dataContext.Messages.Add(message);
+            dataContext.SaveChanges();
             return Ok();
         }
     }

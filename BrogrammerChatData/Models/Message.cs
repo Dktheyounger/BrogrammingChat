@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BrogrammerChat.Model
+namespace BrogrammerChatData.Models
 {
     public partial class Message
     {

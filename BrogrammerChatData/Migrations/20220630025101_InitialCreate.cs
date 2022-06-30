@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BrogrammerChat.Migrations
+namespace BrogrammerChatData.Migrations
 {
     public partial class InitialCreate : Migration
     {
