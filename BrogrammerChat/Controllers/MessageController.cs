@@ -7,11 +7,17 @@ namespace BrogrammerChat.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
+        private readonly BrogrammerChatContext _brogrammerChatContext;
+        public MessageController(BrogrammerChatContext brogrammerChatContext)
+        {
+            _brogrammerChatContext = brogrammerChatContext;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Message>> GetMessages()
         {
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var messages = dataContext.Messages.ToList();
+            //using BrogrammerChatContext dataContext = new BrogrammerChatContext();
+            var messages = _brogrammerChatContext.Messages.ToList();
             return Ok(messages);
         }
 

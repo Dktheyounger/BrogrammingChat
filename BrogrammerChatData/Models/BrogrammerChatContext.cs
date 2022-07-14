@@ -25,6 +25,8 @@ namespace BrogrammerChatData.Models
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=BrogrammerChat; Trusted_Connection=True; MultipleActiveResultSets=true");
+                //Data Source=TRUTHBORN;Initial Catalog=Mugs;Persist Security Info=True;User ID=Mobile_Hacker;Password=Beast1415
+
             }
         }
 
