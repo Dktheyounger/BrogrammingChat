@@ -8,6 +8,12 @@ namespace BrogrammerChat.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly BrogrammerChatContext _brogrammerChatContext;
+        public UserController(BrogrammerChatContext brogrammerChatContext)
+        {
+            _brogrammerChatContext = brogrammerChatContext;
+        }
+
         [HttpGet("{_userID}")]
         public ActionResult<IEnumerable<Message>> GetUserMessages(int _userID)
         {
