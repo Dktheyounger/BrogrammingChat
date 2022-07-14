@@ -23,9 +23,8 @@ namespace BrogrammerChat.Controllers
 
         [HttpGet("{_messageID}")]
         public ActionResult<Message> GetMessage(int _messageID)
-        {
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var message = dataContext.Messages.Single(message => message.MessageId == _messageID);
+        {;
+            var message = _brogrammerChatContext.Messages.Single(message => message.MessageId == _messageID);
 
             if (message == null)
             {
@@ -43,7 +42,6 @@ namespace BrogrammerChat.Controllers
                 return BadRequest();
             }
 
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
 
             var content = new Content()
             {
@@ -51,8 +49,8 @@ namespace BrogrammerChat.Controllers
                 BinaryAttachments = new byte[0]
             };
 
-            dataContext.Contents.Add(content);
-            dataContext.SaveChanges();
+            _brogrammerChatContext.Contents.Add(content);
+            _brogrammerChatContext.SaveChanges();
 
             var message = new Message()
             {
@@ -60,8 +58,8 @@ namespace BrogrammerChat.Controllers
                 UserId = _message.UserId
             };
 
-            dataContext.Messages.Add(message);
-            dataContext.SaveChanges();
+            _brogrammerChatContext.Messages.Add(message);
+            _brogrammerChatContext.SaveChanges();
             return Ok();
         }
     }
