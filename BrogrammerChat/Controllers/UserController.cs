@@ -21,16 +21,14 @@ namespace BrogrammerChat.Controllers
             Byte[] data = new Byte[10];
             string dataAsString = Convert.ToBase64String(data);
 
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var messages = dataContext.Messages.Where(message => message.UserId == _userID).ToList();
+            var messages = _brogrammerChatContext.Messages.Where(message => message.UserId == _userID).ToList();
             return Ok(messages);
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUsers()
         {
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
-            var users = dataContext.Users.ToList();
+            var users = _brogrammerChatContext.Users.ToList();
             return Ok(users);
         }
 
@@ -42,7 +40,6 @@ namespace BrogrammerChat.Controllers
                 return BadRequest();
             }
 
-            using BrogrammerChatContext dataContext = new BrogrammerChatContext();
 
             var user = new User()
             {
@@ -50,8 +47,8 @@ namespace BrogrammerChat.Controllers
                 Password = _user.Password
             };
 
-            dataContext.Users.Add(user);
-            dataContext.SaveChanges();
+            _brogrammerChatContext.Users.Add(user);
+            _brogrammerChatContext.SaveChanges();
             return Ok(user);
         }
     }
